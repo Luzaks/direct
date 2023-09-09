@@ -1,0 +1,7 @@
+.warning-badge {
+    @apply px-2 py-1 rounded-lg bg-yellow-200 text-orange-600 text-xs;
+}
+
+.passed-badge {
+    @apply px-2 py-1 rounded-lg text-xs;
+}

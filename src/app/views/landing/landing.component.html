@@ -1,0 +1,21 @@
+<div>
+    <table>
+        <thead class="mx-3 table-tooltip thead">
+            <tr class="titles-background">
+                <th scope="col" *ngFor="let item of tableHeaderValues">{{item}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let customer of tableBodyValues | paginate: { itemsPerPage: 8, currentPage: p }">
+                <td>{{customer.name}}</td>
+                <td> 
+                    <span [ngClass]="customer.email | validateEmailStyle">{{customer.email}}</span>
+                </td>
+                <td>
+                    <span [ngClass]="customer.phone | validatePhoneStyle">{{customer.phone}}</span>
+                </td>
+            </tr>    
+        </tbody>
+        <pagination-controls (pageChange)="onTableDataChange($event)" previousLabel="Prev" nextLabel="Next"> </pagination-controls>
+    </table>
+</div>
