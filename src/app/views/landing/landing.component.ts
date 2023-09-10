@@ -14,10 +14,13 @@ export class LandingComponent implements OnInit, OnDestroy {
   tableHeaderValues: string[] = ['Nombre', 'Correo', 'Telefono'];
   tableBodyValues: any[] = [];
   p: number = 1;
+  isLoading: boolean = true;
 
   ngOnInit(): void {
-      this.getData().subscribe(data => {
-         this.handleData({str: data});
+      this.getData().subscribe(async (data) => {
+        const formattedData = await this.handleData({str: data});
+        this.tableBodyValues = await this.handleDuplicatesInArray({arr: formattedData});
+         this.isLoading = false;
       });
     
   }
@@ -40,10 +43,11 @@ export class LandingComponent implements OnInit, OnDestroy {
         return auxObj;
       });
       auxData.shift();
-      this.tableBodyValues = this.handleDuplicatesInArray({arr: auxData});
-      console.log('Data formatted in formatData method: ', this.tableBodyValues);
+      console.log('Data formatted in formatData method: ', auxData);
+      return auxData;
     } else {
       console.error('No string received in formatData method. Value received: ', str);
+      return [];
     }
   }
 
@@ -87,14 +91,6 @@ export class LandingComponent implements OnInit, OnDestroy {
 
   onTableDataChange(ev: any) {
     this.p = ev;
-  }
-
-  validateEmail({str}: {str: string;}) {
-
-  }
-
-  validatePhone({str}: {str: string;}) {
-
   }
 
 }

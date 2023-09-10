@@ -1,75 +1,117 @@
-<div class="w-full">
-    <div class="w-full flex">
-        <div class="w-1/2">
-            <span>Repeated:</span>
-            <span>{{totalDuplicatedDataCount}}</span>
+<div *ngIf="!isLoading" class="landing-component-container">
+    <div class="landing-dashboard-container">
+        <div class="landing-dashboard-badge">
+            <div class="h-2 w-2 bg-red-200 rounded-full"></div>
+            <span class="text-sm">Repeated:  <span class="font-medium text-base">{{totalDuplicatedDataCount}}</span></span>
         </div>
-        <div class="w-1/2">
-            <span>Total:</span>
-            <span>{{tableBodyValues.length}}</span>
+        <div class="landing-dashboard-badge">
+            <div class="h-2 w-2 bg-blue-200 rounded-full"></div>
+            <span class="text-sm">Total:  <span class="font-medium text-base">{{tableBodyValues.length}}</span></span>
         </div>
     </div>
-    <table>
-        <thead class="mx-3 table-tooltip thead">
-            <tr class="titles-background">
-                <th scope="col" *ngFor="let item of tableHeaderValues">{{item}}</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr 
-            *ngFor="let customer of tableBodyValues | paginate: { itemsPerPage: 8, currentPage: p }"
-            [ngClass]="customer.duplicatedData && 'bg-red-50'"
-            >
-                <td>
-                    <div 
-                        class="landing-row-content"
-                        (mouseover)="customer.onHoverName = true;"
-                        (mouseout)="customer.onHoverName = false;"
-                    >
-                        <span>{{customer.name || '-'}}</span>
-                        <mat-icon *ngIf="customer.duplicatedName" class="text-red-900">warning</mat-icon>
-                        <span 
-                            *ngIf="customer.onHoverName && customer.duplicatedName"
-                            class="landing-row-tooltip"
+    <div class="landing-pagination-container">
+        <table class="landing-table-component">
+            <thead class="landing-head-table">
+                <tr>
+                    <th scope="col" *ngFor="let item of tableHeaderValues">{{item}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr 
+                *ngFor="let customer of tableBodyValues | paginate: { itemsPerPage: 8, currentPage: p }"
+                (mouseover)="customer.customerRow = true;"
+                (mouseout)="customer.customerRow = false;"
+                [ngClass]="
+                    customer.duplicatedData && customer.customerRow 
+                    ? 'landing-table-row bg-red-100'
+                    : (customer.duplicatedData && !customer.customerRow )
+                    ? 'landing-table-row bg-red-50'
+                    : (!customer.duplicatedData && customer.customerRow)
+                    ? 'landing-table-row bg-blue-50'
+                    :'landing-table-row'
+                    "
+                >
+                    <td class="landing-table-row-column">
+                        <div 
+                            class="landing-row-content"
                         >
-                            Duplicated Name
-                        </span>
-                    </div>
-                </td>
-                <td> 
-                    <div 
-                        class="landing-row-content"
-                        (mouseover)="customer.onHoverEmail = true;"
-                        (mouseout)="customer.onHoverEmail = false;"
-                    >
-                        <span [ngClass]="customer.email | validateEmailStyle">{{customer.email || '-'}}</span>
-                        <mat-icon *ngIf="customer.duplicatedEmail" class="text-red-900">warning</mat-icon>
-                        <span 
-                            *ngIf="customer.onHoverEmail && customer.duplicatedEmail"
-                            class="landing-row-tooltip"
+                            <span>
+                                {{customer.name || '-'}}
+                            </span>
+                            <div class="landing-icon-wn-cont">
+                                <mat-icon 
+                                    *ngIf="customer.duplicatedName" 
+                                    class="text-red-900 cursor-pointer"
+                                    (mouseover)="customer.onHoverName = true;"
+                                    (mouseout)="customer.onHoverName = true;"
+                                >
+                                    info
+                                </mat-icon>
+                                <span 
+                                    *ngIf="customer.onHoverName && customer.duplicatedName"
+                                    class="landing-row-tooltip"
+                                >
+                                    Duplicated name
+                                </span>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="landing-table-row-column"> 
+                        <div 
+                            class="landing-row-content"
                         >
-                        Duplicated Name
-                    </span>
-                    </div>
-                </td>
-                <td>
-                    <div 
-                        class="landing-row-content"
-                        (mouseover)="customer.onHoverPhone = true;"
-                        (mouseout)="customer.onHoverPhone = false;"
-                    >
-                        <span [ngClass]="customer.phone | validatePhoneStyle">{{customer.phone || '-'}}</span>
-                        <mat-icon *ngIf="customer.duplicatedPhone" class="text-red-900">warning</mat-icon>
-                        <span 
-                            *ngIf="customer.onHoverPhone && customer.duplicatedPhone"
-                            class="landing-row-tooltip"
+                            <span [ngClass]="customer.email | validateEmailStyle">
+                                {{customer.email || '-'}}
+                                <span class="invalid-tooltip">Invalid email</span>
+                            </span>
+                            <div class="landing-icon-wn-cont">
+    
+                                <mat-icon
+                                    *ngIf="customer.duplicatedEmail"
+                                    (mouseover)="customer.onHoverEmail = true;"
+                                    (mouseout)="customer.onHoverEmail = false;"
+                                    class="text-red-900 cursor-pointer"
+                                >
+                                    info
+                                </mat-icon>
+                                <span 
+                                    *ngIf="customer.onHoverEmail && customer.duplicatedEmail"
+                                    class="landing-row-tooltip"
+                                >
+                                    Duplicated email
+                                </span>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="landing-table-row-column">
+                        <div 
+                            class="landing-row-content"
                         >
-                        Duplicated Name
-                    </span>
-                    </div>
-                </td>
-            </tr>    
-        </tbody>
-        <pagination-controls (pageChange)="onTableDataChange($event)" previousLabel="Prev" nextLabel="Next"> </pagination-controls>
-    </table>
+                            <span [ngClass]="customer.phone | validatePhoneStyle">
+                                {{customer.phone || '-'}}
+                                <span class="invalid-tooltip">Invalid Phone</span>
+                            </span>
+                            <div class="landing-icon-wn-cont">
+                                <mat-icon 
+                                    *ngIf="customer.duplicatedPhone" 
+                                    class="text-red-900 cursor-pointer"
+                                    (mouseover)="customer.onHoverPhone = true;"
+                                    (mouseout)="customer.onHoverPhone = false;"
+                                >
+                                    info
+                                </mat-icon>
+                                <span 
+                                    *ngIf="customer.onHoverPhone && customer.duplicatedPhone"
+                                    class="landing-row-tooltip"
+                                >
+                                Duplicated Phonenumber
+                            </span>
+                        </div>
+                        </div>
+                    </td>
+                </tr>    
+            </tbody>
+        </table>
+    </div>
+    <pagination-controls (pageChange)="onTableDataChange($event)" previousLabel="Prev" nextLabel="Next"> </pagination-controls>
 </div>
