@@ -1,3 +1,11 @@
+.landing-row-content {
+    @apply w-fit h-fit relative flex items-center justify-center overflow-visible;
+}
+
+.landing-row-tooltip {
+    @apply absolute transform top-0 left-1/2 -translate-y-1/2;
+}
+
 .warning-badge {
     @apply px-2 py-1 rounded-lg bg-yellow-200 text-orange-600 text-xs;
 }

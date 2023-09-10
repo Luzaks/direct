@@ -1,4 +1,14 @@
-<div>
+<div class="w-full">
+    <div class="w-full flex">
+        <div class="w-1/2">
+            <span>Repeated:</span>
+            <span>{{totalDuplicatedDataCount}}</span>
+        </div>
+        <div class="w-1/2">
+            <span>Total:</span>
+            <span>{{tableBodyValues.length}}</span>
+        </div>
+    </div>
     <table>
         <thead class="mx-3 table-tooltip thead">
             <tr class="titles-background">
@@ -6,13 +16,57 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let customer of tableBodyValues | paginate: { itemsPerPage: 8, currentPage: p }">
-                <td>{{customer.name}}</td>
+            <tr 
+            *ngFor="let customer of tableBodyValues | paginate: { itemsPerPage: 8, currentPage: p }"
+            [ngClass]="customer.duplicatedData && 'bg-red-50'"
+            >
+                <td>
+                    <div 
+                        class="landing-row-content"
+                        (mouseover)="customer.onHoverName = true;"
+                        (mouseout)="customer.onHoverName = false;"
+                    >
+                        <span>{{customer.name || '-'}}</span>
+                        <mat-icon *ngIf="customer.duplicatedName" class="text-red-900">warning</mat-icon>
+                        <span 
+                            *ngIf="customer.onHoverName && customer.duplicatedName"
+                            class="landing-row-tooltip"
+                        >
+                            Duplicated Name
+                        </span>
+                    </div>
+                </td>
                 <td> 
-                    <span [ngClass]="customer.email | validateEmailStyle">{{customer.email}}</span>
+                    <div 
+                        class="landing-row-content"
+                        (mouseover)="customer.onHoverEmail = true;"
+                        (mouseout)="customer.onHoverEmail = false;"
+                    >
+                        <span [ngClass]="customer.email | validateEmailStyle">{{customer.email || '-'}}</span>
+                        <mat-icon *ngIf="customer.duplicatedEmail" class="text-red-900">warning</mat-icon>
+                        <span 
+                            *ngIf="customer.onHoverEmail && customer.duplicatedEmail"
+                            class="landing-row-tooltip"
+                        >
+                        Duplicated Name
+                    </span>
+                    </div>
                 </td>
                 <td>
-                    <span [ngClass]="customer.phone | validatePhoneStyle">{{customer.phone}}</span>
+                    <div 
+                        class="landing-row-content"
+                        (mouseover)="customer.onHoverPhone = true;"
+                        (mouseout)="customer.onHoverPhone = false;"
+                    >
+                        <span [ngClass]="customer.phone | validatePhoneStyle">{{customer.phone || '-'}}</span>
+                        <mat-icon *ngIf="customer.duplicatedPhone" class="text-red-900">warning</mat-icon>
+                        <span 
+                            *ngIf="customer.onHoverPhone && customer.duplicatedPhone"
+                            class="landing-row-tooltip"
+                        >
+                        Duplicated Name
+                    </span>
+                    </div>
                 </td>
             </tr>    
         </tbody>
