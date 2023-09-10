@@ -115,3 +115,4 @@
     </div>
     <pagination-controls (pageChange)="onTableDataChange($event)" previousLabel="Prev" nextLabel="Next"> </pagination-controls>
 </div>
+<app-loading *ngIf="isLoading" class="w-full h-full"></app-loading>

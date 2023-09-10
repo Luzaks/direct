@@ -1,10 +1,10 @@
 .landing-component-container {
-    @apply w-full h-full p-8 flex flex-col items-center justify-center;
+    @apply w-full h-full px-8 pb-8 pt-[80px] flex flex-col items-center justify-center;
     background-color: #fafbfd;
 }
 
 .landing-dashboard-container {
-    @apply w-full max-w-[1500px] flex items-center justify-end my-8 gap-3;
+    @apply w-full max-w-[1500px] flex items-center justify-end mb-8 gap-3;
 }
 
 .landing-dashboard-badge {
@@ -46,7 +46,7 @@ th, td {
 }
 
 .warning-badge {
-    @apply px-2 py-1 rounded-full px-4 bg-yellow-300 text-orange-500 relative cursor-pointer;
+    @apply px-2 py-1 rounded-full px-4 bg-yellow-300 text-orange-900 relative cursor-pointer;
 }
 
 .passed-badge {
@@ -54,7 +54,7 @@ th, td {
 }
 
 .invalid-tooltip {
-    @apply text-gray-900 absolute bottom-[110%] transform left-1/2 -translate-x-1/2 bg-white shadow flex items-center justify-center px-4 py-2 rounded-lg;
+    @apply text-gray-900 absolute bottom-[120%] transform left-1/2 -translate-x-1/2 bg-white shadow flex items-center justify-center px-4 py-2 rounded-lg;
     opacity: 0;
     visibility: hidden;
 }
