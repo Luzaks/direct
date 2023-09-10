@@ -16,6 +16,11 @@ import { LoadingComponent } from './shared/loading/loading.component';
 import { ValidateEmailPipe } from './pipes/validateEmail/validate-email.pipe';
 import { ValidatePhonePipe } from './pipes/validatePhone/validate-phone.pipe';
 
+// Angular Material
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatIconModule } from '@angular/material/icon';
+import { NavBarComponent } from './shared/nav-bar/nav-bar.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,12 +28,15 @@ import { ValidatePhonePipe } from './pipes/validatePhone/validate-phone.pipe';
     LoadingComponent,
     ValidateEmailPipe,
     ValidatePhonePipe,
+    NavBarComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    BrowserAnimationsModule,
+    MatIconModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

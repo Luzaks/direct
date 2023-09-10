@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { ReadingDataService } from '../../services/reading-data.service';
 
 @Component({
   selector: 'app-landing',
@@ -8,65 +8,37 @@ import { HttpClient } from '@angular/common/http';
 })
 export class LandingComponent implements OnInit, OnDestroy {
 
-  constructor(private http: HttpClient) {}
+  constructor(private readData: ReadingDataService) {}
 
-  tableHeaderValues: string[] = ['Nombre', 'Correo', 'Telefono'];
+  totalDuplicatedDataCount: number = 0;
+  tableHeaderValues: string[] = ['Id', 'Nombre', 'Correo', 'Telefono'];
   tableBodyValues: any[] = [];
   p: number = 1;
+  isLoading: boolean = true;
 
   ngOnInit(): void {
-      this.getData().subscribe(data => {
-         this.formatData({str: data});
-      });
+    this.handleInitializeData();
     
   }
 
   ngOnDestroy(): void {
-    
+    this.tableBodyValues = [];
   }
 
-  getData() {
-    return this.http
-    .get('/assets/data/MOCK_DATA.csv', {responseType: 'text'})
-  }
-
-  formatData({str}: any) {
-    if (str) {
-      const auxData = str.split('\r\n').map((item: any) => {
-        const format = item.split(',');
-        const auxObj = { name: format[0], email: format[1], phone: format[2] };
-        return JSON.stringify(auxObj);
-      });
-      auxData.shift();
-      
-      this.tableBodyValues = this.eraseDuplicatesInArray({arr: auxData});
-      console.log('Data formatted in formatData method: ', this.tableBodyValues);
-    } else {
-      console.error('No string received in formatData method. Value received: ', str);
-    }
-  }
-
-  eraseDuplicatesInArray({arr}: {arr: any[]}) {
-    if (arr) {
-      const uniqueSet = new Set(arr);
-      const uniqueArray = Array.from(uniqueSet).map(item => JSON.parse(item));
-      return [...new Set(uniqueArray)]
-    } else {
-      console.error('No array received in formatData method. Value received: ', arr);
-      return [];
-    }
+  handleInitializeData() {
+    this.readData.getData().subscribe(async (data) => {
+      const formattedData = await this.readData.handleData({str: data});
+      const { uniqueArr, counter } = await this.readData.handleDuplicatesInArray({arr: formattedData});
+      this.tableBodyValues = uniqueArr;
+      this.totalDuplicatedDataCount = counter;
+      setTimeout(() => {
+        this.isLoading = false;
+      }, 1000); 
+    });
   }
 
   onTableDataChange(ev: any) {
     this.p = ev;
-  }
-
-  validateEmail({str}: {str: string;}) {
-
-  }
-
-  validatePhone({str}: {str: string;}) {
-
   }
 
 }
