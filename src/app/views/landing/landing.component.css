@@ -1,5 +1,5 @@
 .landing-component-container {
-    @apply w-full h-full px-8 pb-8 pt-[80px] flex flex-col items-center justify-center;
+    @apply w-full h-full px-8 pb-8 pt-[100px] flex flex-col items-center justify-start;
     background-color: #fafbfd;
 }
 
@@ -18,6 +18,18 @@ th, td {
 td:nth-child(1),
 th:nth-child(1) {
     @apply w-[9%];
+}
+
+td:nth-child(2),
+th:nth-child(2) {
+    @apply w-[91%] md:w-[30%];
+}
+
+td:nth-child(3),
+th:nth-child(3),
+td:nth-child(4),
+th:nth-child(4) {
+    @apply invisible md:visible;
 }
 
 .landing-table-component {

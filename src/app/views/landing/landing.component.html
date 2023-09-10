@@ -16,7 +16,7 @@
                     <th scope="col" *ngFor="let item of tableHeaderValues">{{item}}</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody *ngIf="tableBodyValues.length > 0">
                 <tr 
                 *ngFor="let customer of tableBodyValues | paginate: { itemsPerPage: 8, currentPage: p }"
                 (mouseover)="customer.customerRow = true;"
@@ -113,12 +113,15 @@
                                     *ngIf="customer.onHoverPhone && customer.duplicatedPhone"
                                     class="landing-row-tooltip"
                                 >
-                                Duplicated Phonenumber
+                                Duplicated phonenumber
                             </span>
                         </div>
                         </div>
                     </td>
                 </tr>    
+            </tbody>
+            <tbody *ngIf="tableBodyValues.length === 0">
+                No results
             </tbody>
         </table>
     </div>

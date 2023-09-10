@@ -13,28 +13,42 @@ export class LandingComponent implements OnInit, OnDestroy {
   totalDuplicatedDataCount: number = 0;
   tableHeaderValues: string[] = ['Id', 'Nombre', 'Correo', 'Telefono'];
   tableBodyValues: any[] = [];
+  valueSubs: any;
   p: number = 1;
   isLoading: boolean = true;
 
   ngOnInit(): void {
+    // Obtain data from file and parse it for front end
     this.handleInitializeData();
-    
+    // Read parsed data from global state
+    this.valueSubs = this.readData.dataList$.subscribe(async (data: any) => {
+      if (data.data && data.data.length > 0) {
+        // Process formmat for front end UI/UX availability
+        this.handleProcessData(data.data);
+      }
+    });
   }
 
   ngOnDestroy(): void {
     this.tableBodyValues = [];
+    if (this.valueSubs){
+      this.valueSubs.unsubscribe();
+    }
   }
 
   handleInitializeData() {
     this.readData.getData().subscribe(async (data) => {
-      const formattedData = await this.readData.handleData({str: data});
-      const { uniqueArr, counter } = await this.readData.handleDuplicatesInArray({arr: formattedData});
-      this.tableBodyValues = uniqueArr;
-      this.totalDuplicatedDataCount = counter;
-      setTimeout(() => {
-        this.isLoading = false;
-      }, 1000); 
+      this.readData.parsingData({csvData: data});
     });
+  }
+
+  async handleProcessData(data: any) {
+    // Obtain
+    this.tableBodyValues = await this.readData.handleData({arr: data});
+    this.totalDuplicatedDataCount = await this.readData.handleReturnData();
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 500); 
   }
 
   onTableDataChange(ev: any) {

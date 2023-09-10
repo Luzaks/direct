@@ -1,5 +1,5 @@
 .navigation-bar-content {
-    @apply w-full h-[70px] bg-black flex items-center justify-center fixed;
+    @apply w-full h-[70px] bg-black flex items-center justify-center fixed z-[90];
 }
 
 .navigation-bar-content-cont {
