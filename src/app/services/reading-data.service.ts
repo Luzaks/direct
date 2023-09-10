@@ -39,7 +39,6 @@ export class ReadingDataService extends StateService<any> {
     this.papa.parse(csvData,{
       complete: (result: any) => {
         if (result.data && result.data.length > 0) {
-          console.log(result);
           this.selectState({data: [...result.data]});
         }
       }
@@ -51,6 +50,7 @@ export class ReadingDataService extends StateService<any> {
       // TO DO: Optimize with an algorithm, larger arrays will colapse
       const auxData = arr.map((item: string, index: number) => {
         const auxObj = { id: index, name: item[0], email: item[1], phone: item[2] };
+
         return auxObj;
       });
       auxData.shift();
