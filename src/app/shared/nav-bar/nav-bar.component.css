@@ -1,0 +1,7 @@
+.navigation-bar-content {
+    @apply w-full h-[70px] bg-black flex items-center justify-center fixed z-[90];
+}
+
+.navigation-bar-content-cont {
+    @apply  w-full max-w-[1500px] flex items-center justify-between px-8;
+}
