@@ -18,10 +18,13 @@ export class LandingComponent implements OnInit, OnDestroy {
   isLoading: boolean = true;
 
   ngOnInit(): void {
+    // Obtain data from file and parse it for front end
     this.handleInitializeData();
+    // Read parsed data from global state
     this.valueSubs = this.readData.dataList$.subscribe(async (data: any) => {
       if (data.data && data.data.length > 0) {
-        this.handleTry(data.data);
+        // Process formmat for front end UI/UX availability
+        this.handleProcessData(data.data);
       }
     });
   }
@@ -33,20 +36,19 @@ export class LandingComponent implements OnInit, OnDestroy {
     }
   }
 
-  async handleTry(data: any) {
-    const formattedData = await this.readData.handleData({arr: data});
-    const { uniqueArr, counter } = await this.readData.handleDuplicatesInArray({arr: formattedData});
-    this.tableBodyValues = uniqueArr;
-    this.totalDuplicatedDataCount = counter;
-    setTimeout(() => {
-      this.isLoading = false;
-    }, 500); 
-  }
-
   handleInitializeData() {
     this.readData.getData().subscribe(async (data) => {
       this.readData.parsingData({csvData: data});
     });
+  }
+
+  async handleProcessData(data: any) {
+    // Obtain
+    this.tableBodyValues = await this.readData.handleData({arr: data});
+    this.totalDuplicatedDataCount = await this.readData.handleReturnData();
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 500); 
   }
 
   onTableDataChange(ev: any) {

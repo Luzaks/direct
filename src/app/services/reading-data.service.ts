@@ -3,9 +3,21 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { StateService } from './globalService/initial-state-service.service';
 import { Papa } from 'ngx-papaparse';
+import * as _ from 'lodash';
 
 interface InitialStateProps {
   data: string[] | undefined;
+}
+
+interface TypeObjProps {
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+  duplicatedPhone?: boolean;
+  duplicatedEmail?: boolean;
+  duplicatedName?: boolean;
+  duplicatedData?: boolean;
 }
 
 const initialState: InitialStateProps = {
@@ -45,12 +57,16 @@ export class ReadingDataService extends StateService<any> {
   });
   }
 
-  handleData({arr}: any) {
+  handleData({arr}: any) {    
     if (arr) {
-      // TO DO: Optimize with an algorithm, larger arrays will colapse
-      const auxData = arr.map((item: string, index: number) => {
-        const auxObj = { id: index, name: item[0], email: item[1], phone: item[2] };
-
+      // Get Unique array
+      const uniqueObjArray =  this.handleUniqArr(arr);
+         // Manipulate uniq array data format
+      const auxData = uniqueObjArray.map((item: string, index: number) => {
+        const auxObj: TypeObjProps = { id: index, name: item[0], email: item[1], phone: item[2] };
+          // Manipulate uniq array data format
+        this.handleFormatDuplicatedDataInfo({item: auxObj, arr: uniqueObjArray});
+        if (auxObj.duplicatedData) this.counter++;
         return auxObj;
       });
       auxData.shift();
@@ -62,37 +78,35 @@ export class ReadingDataService extends StateService<any> {
     }
   }
 
-  handleFormatDuplicatedData({item, arr}: any) {
+  handleUniqArr(arr: any) {
+    return _.uniqWith((arr), (a: any, b: any) => a[0] === b[0] &&
+    a[1] === b[1] &&
+    a[2] === b[2]
+  );
+  }
+
+  async handleFormatDuplicatedDataInfo({item, arr}: any) {
     if (arr) {
-      arr.forEach((data: any) => {
-        const conditionalOne: boolean = data.id !== item.id;
-        const conditionalTwo: boolean = (data.phone === item.phone || data.email === item.email || data.name === item.name);
-        if (!data.duplicatedData && conditionalOne && conditionalTwo) {
-          if (data.phone === item.phone) {
-            data.duplicatedPhone = true; 
+      arr.forEach((data: any, index: number) => {
+        const conditionalOne: boolean = index !== item.id;
+        const conditionalTwo: boolean = (data[2] === item.phone || data[1] === item.email || data[0] === item.name);
+        if (conditionalOne && conditionalTwo) {
+          if (data[2] === item.phone) {
+            item.duplicatedPhone = true; 
           }
-          if (data.email === item.email) {
-            data.duplicatedEmail = true;
+          if (data[1] === item.email) {
+            item.duplicatedEmail = true;
           }
-          if (data.name === item.name) {
-            data.duplicatedName = true;
+          if (data[0] === item.name) {
+            item.duplicatedName = true;
           }
-          this.counter++;
-          data.duplicatedData = true;
+          item.duplicatedData = true;
         }
       });
     }
   }
 
-  handleDuplicatesInArray({arr}: {arr: any[]}): any {
-    if (arr) {
-      const uniqueArr = Array.from(new Set(arr));
-      // TO DO: Optimize with an algorithm, larger arrays will colapse
-      uniqueArr.forEach(item => this.handleFormatDuplicatedData({item, arr: uniqueArr}));
-      return {uniqueArr,  counter: this.counter };
-    } else {
-      console.error('No array received in formatData method. Value received: ', arr);
-      return [];
-    }
+  handleReturnData(): any {
+    return this.counter;
   }
 }

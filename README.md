@@ -1,27 +1,36 @@
-# Direct
+# ⭐ Angular ⭐
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.1.1.
+This is a simple Angular + Typescrpt layout responsive front end exercise of a project based on on page only that focus on rendering data from a csv file. 
 
-## Development server
+## 👉 About the project
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Single Page App plications consisting in only one view, this view displays on the screen an amount of proccessed data obtained by a csv.
 
-## Code scaffolding
+## 💻 Getting Started
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+So, do you wanna start? Please check out the following steps!
 
-## Build
+- Git clone it in your local machine
+- Open your favorite terminal
+- Navigate through the project archive
+- Run the following commands
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+```js
+   npm i
+   npm start
+```
+- And open your http://localhost:4200/ server on your fav browser
 
-## Running unit tests
+There you have it! You will see this Angular development.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## 👀 Stack used
+- Angular
+- Tailwing
+- Typescript
+- Angular Material
+- CSS
+- HTTPClient
 
-## Running end-to-end tests
+## 👋 Regards
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Thank you a lot for being here. I will be open to any more comments that you may have. Don't hesitate to get in touch!
