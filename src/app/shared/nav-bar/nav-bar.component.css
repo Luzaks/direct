@@ -3,5 +3,5 @@
 }
 
 .navigation-bar-content-cont {
-    @apply  w-full max-w-[1500px] flex items-center justify-between;
+    @apply  w-full max-w-[1500px] flex items-center justify-between px-8;
 }

@@ -11,7 +11,7 @@ export class LandingComponent implements OnInit, OnDestroy {
   constructor(private readData: ReadingDataService) {}
 
   totalDuplicatedDataCount: number = 0;
-  tableHeaderValues: string[] = ['Nombre', 'Correo', 'Telefono'];
+  tableHeaderValues: string[] = ['Id', 'Nombre', 'Correo', 'Telefono'];
   tableBodyValues: any[] = [];
   p: number = 1;
   isLoading: boolean = true;
