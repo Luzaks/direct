@@ -4,8 +4,12 @@ import { HttpClient } from '@angular/common/http';
 import { StateService } from './globalService/initial-state-service.service';
 import { Papa } from 'ngx-papaparse';
 
-const initialState: any = {
-  data: []
+interface InitialStateProps {
+  data: string[] | undefined;
+}
+
+const initialState: InitialStateProps = {
+  data: undefined
 };
 
 @Injectable({
@@ -17,12 +21,12 @@ export class ReadingDataService extends StateService<any> {
     super(initialState);
 
   }
-  dataList$: Observable<string[]> = this.select((state) => {
+  dataList$: Observable<InitialStateProps> = this.select((state) => {
     return state;
   });
   counter:  number = 0;
 
-  selectState(state: {data: string[]}) {
+  selectState(state: InitialStateProps) {
     this.setState(state);
 }
 
@@ -44,7 +48,7 @@ export class ReadingDataService extends StateService<any> {
 
   handleData({arr}: any) {
     if (arr) {
-      // TO DO: Optimize, larger arrays will colapse
+      // TO DO: Optimize with an algorithm, larger arrays will colapse
       const auxData = arr.map((item: string, index: number) => {
         const auxObj = { id: index, name: item[0], email: item[1], phone: item[2] };
         return auxObj;
@@ -83,7 +87,7 @@ export class ReadingDataService extends StateService<any> {
   handleDuplicatesInArray({arr}: {arr: any[]}): any {
     if (arr) {
       const uniqueArr = Array.from(new Set(arr));
-      // TO DO: Optimize, larger arrays will colapse
+      // TO DO: Optimize with an algorithm, larger arrays will colapse
       uniqueArr.forEach(item => this.handleFormatDuplicatedData({item, arr: uniqueArr}));
       return {uniqueArr,  counter: this.counter };
     } else {

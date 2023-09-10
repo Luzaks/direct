@@ -14,14 +14,13 @@ export class LandingComponent implements OnInit, OnDestroy {
   tableHeaderValues: string[] = ['Id', 'Nombre', 'Correo', 'Telefono'];
   tableBodyValues: any[] = [];
   valueSubs: any;
-  auxList: any[] = [];
   p: number = 1;
   isLoading: boolean = true;
 
   ngOnInit(): void {
     this.handleInitializeData();
     this.valueSubs = this.readData.dataList$.subscribe(async (data: any) => {
-      if (data.data.length > 0) {
+      if (data.data && data.data.length > 0) {
         this.handleTry(data.data);
       }
     });
